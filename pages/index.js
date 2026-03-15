@@ -723,6 +723,11 @@ export default function GolfPickem() {
       setLoading(false);
     };
     load();
+    const interval = setInterval(async () => {
+      const {data} = await supabase.from("scores").select("*");
+      if (data) setScores(data);
+    }, 2 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const activeTourney = tournaments.find(t=>t.status==="active");
